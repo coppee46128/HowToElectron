@@ -1,7 +1,7 @@
 <html>
 <head>
 <meta charset='utf-8'>
-<title>Electron日本語訳</title>
+<title>Electronコピペ用</title>
 <link rel='stylesheet' href='_css/all.css'>
 <style>
 
@@ -46,16 +46,25 @@
 </ul>
 <!--■■left■■-->
 </div><!--left-->
-<!--■■■■■■■■■■■■■■■■■■■■-->
+<!--■■■■■■■■■■■■■■■■■■■■■■■■■■■■-->
+<!--■■■■■■■■■■■■■■■■■■■■■■■■■■■■-->
+<!--■■■■■■■■■■■■■■■■■■■■■■■■■■■■-->
+<!--■■■■■■■■■■■■■■■■■■■■■■■■■■■■-->
+<!--■■■■■■■■■■■■■■■■■■■■■■■■■■■■-->
+<!--■■■■■■■■■■■■■■■■■■■■■■■■■■■■-->
+<!--■■■■■■■■■■■■■■■■■■■■■■■■■■■■-->
+<!--■■■■■■■■■■■■■■■■■■■■■■■■■■■■-->
+<!--■■■■■■■■■■■■■■■■■■■■■■■■■■■■-->
 <div id="right">
 <div class="writeingtime">更新日:2017/09/24</div>
 <div class="reference">参照元:https://electron.atom.io/docs/api/app/</div>
-<div class="headline">
-<div class="bigtitle">app</div>
+<div class="rightheader">
+<div class="big">app</div>
 アプリケーションのライフサイクルを制御します。<br>
 アプリケーションの起動、終了などに関する挙動を設定できます。<br>
 その他にもそのOS特有の設定、chromiumの設定、web関連の設定も一部あります。
 </div><!--headline-->
+<hr>
 <!--■■■■■■■■■■■■■■■■■■■■■■■■■■■■-->
 <!--■■■■■■■■■■■■■■■■■■■■■■■■■■■■-->
 <!--■■■■■■■■■■■■■■■■■■■■■■■■■■■■-->
@@ -65,43 +74,68 @@
 <!--■■■■■■■■■■■■■■■■■■■■■■■■■■■■-->
 <!--■■■■■■■■■■■■■■■■■■■■■■■■■■■■-->
 <!--■■■■■■■■■■■■■■■■■■■■■■■■■■■■-->
+<h2>使用例</h2>
+<h4>index.js</h4>
+<pre>
+//インスタンス
+const electron=require("electron");
+const app=electron.app;
+const BrowserWindow=electron.BrowserWindow;
+let win;
+////イベントメソッド
+//初期化
+app.on("ready",function(){
+	win=new BrowserWindow();
+	console.log("ready");
+});
+//全てのウィンドウを閉じた時
+app.on("window-all-closed",function(){
+	console.log("window-all-closed");
+	app.quit();
+});
+//アプリケーションがウィンドウを閉じる前
+app.on("before-quit",function(){
+	console.log("before-quit");
+});
+//全てのウィンドウを閉じてアプリケーションが終了する時
+app.on("will-quit",function(){
+	console.log("will-quit");
+});
+//アプリケーションが終了する時
+app.on("quit",function(){
+	console.log("quit");
+});
 
 
-
-
+/*
+上記を起動するとウィンドウが出てきてそれを閉じるとアプリが終了します。
+その際上から順にメソッドが実行されます。
+*/
+</pre>
+<hr>
+<!--■■■■■■■■■■■■■■■■■■■■■■■■■■■■-->
+<!--■■■■■■■■■■■■■■■■■■■■■■■■■■■■-->
+<!--■■■■■■■■■■■■■■■■■■■■■■■■■■■■-->
+<!--■■■■■■■■■■■■■■■■■■■■■■■■■■■■-->
+<!--■■■■■■■■■■■■■■■■■■■■■■■■■■■■-->
+<!--■■■■■■■■■■■■■■■■■■■■■■■■■■■■-->
+<!--■■■■■■■■■■■■■■■■■■■■■■■■■■■■-->
+<!--■■■■■■■■■■■■■■■■■■■■■■■■■■■■-->
+<!--■■■■■■■■■■■■■■■■■■■■■■■■■■■■-->
 <h2>イベント</h2>
-次の例は最後のウィンドウを閉じた時、アプリを終わらせる例を示しています。<br>
-イベントはメソッドを直接呼ぶのではなく、テキストとコールバックを渡します。
 
 
 <h3 id="event-ready">'ready'</h3>
-<p> Electronが初期化を終了したときに放出されます。</p>
-<pre>
-const {app,BrowserWindow}=require("electron");
-let win;
-app.on("ready",function(){
-	win=new BrowserWindow();
-	//win.loadURL('file://' + __dirname + '/index.html');
-	//win.webContents.openDevTools();
-});
-</pre>
+ Electronが初期化を終了したときに放出されます。<br>
 <h3 id="event-window-all-closed">'window-all-closed'</h3>
-
 全てのウィンドウを閉じた時に呼ばれます。<br>
-もし全てのウィンドウを閉じてこのイベントを使っていない場合、デフォルトでアプリを終了させます。<br>
+このイベントを使っていない場合、デフォルトでアプリを終了させます。<br>
 ただしもし使っている場合アプリを終わらせるかどうか制御します。<br>
 もしユーザーがcmd+Qコマンド、また開発者がapp.quit()をした場合、<br>
 electronは最初に全てのウィンドウを閉じてwill-quitを発生させます。<br>
 この場合window-all-closedは呼ばれません。<br>
-<pre>
-const {app} = require('electron')
-app.on('window-all-closed',function(){
-	app.quit();
-});
-</pre>
-
 <h3 id="event-before-quit">'before-quit'</h3>
-<b class="rtn">戻り値：</b>
+<p class="rtn">戻り値：</p>
 <ul>
 <li>event Event</li>
 </ul>
@@ -109,7 +143,7 @@ app.on('window-all-closed',function(){
 アプリケーションがウィンドウを閉じる前に送出されます。
 <h3 id="event-will-quit">'will-quit'</h3>
 
-<b class="rtn">戻り値：</b>
+<p class="rtn">戻り値：</p>
 <ul>
 <li>event Event</li>
 </ul>
@@ -117,53 +151,53 @@ app.on('window-all-closed',function(){
 will-quitイベントとwindow-all-closedイベントの違いについては、 window-all-closedイベントの説明を参照してください。<br>
 <h3 id="event-quit">'quit'</h3>
 
-<b class="rtn">戻り値：</b>
+<p class="rtn">戻り値：</p>
 <ul>
 <li>event Event</li>
 <li>exitCode Integer</li>
 </ul>
-<p>ユーザーがアプリケーションでURLを開こうとしたときに発生します。 アプリケーションのInfo.plistファイルは、 CFBundleURLTypesキー内のURLスキームを定義し、 NSPrincipalClassをAtomApplication設定する必要があります。</p><p>このイベントを処理する場合は、 event.preventDefault()を呼び出す必要があります。</p>
+アプリケーションが終了する時に呼ばれます。<br>
 <h3 id="event-activate-macos">'activate' <em class="note">macOS</em></h3>
 
-<b class="rtn">戻り値：</b>
+<p class="rtn">戻り値：</p>
 <ul>
 <li>event Event</li>
 <li>hasVisibleWindows Boolean</li>
 </ul>
-<p>アプリケーションが起動されると発生します。 アプリケーションを初めて起動する、既に実行中のアプリケーションを再起動する、またはアプリケーションのドックやタスクバーのアイコンをクリックするなど、さまざまなアクションがこのイベントを引き起こす可能性があります。</p>
+アプリケーションが起動されると発生します。 アプリケーションを初めて起動する、既に実行中のアプリケーションを再起動する、またはアプリケーションのドックやタスクバーのアイコンをクリックするなど、さまざまなアクションがこのイベントを引き起こす可能性があります。
 
 <h3 id="event-browser-window-blur">'browser-window-blur'</h3>
 
-<b class="rtn">戻り値：</b>
+<p class="rtn">戻り値：</p>
 <ul>
 <li>event Event</li>
 <li>window BrowserWindow</li>
 </ul>
-<p> browserWindowが不鮮明になると発生します。</p>
+ browserWindowが不鮮明になると発生します。
 <h3 id="event-browser-window-focus">'browser-window-focus'</h3>
 
-<b class="rtn">戻り値：</b>
+<p class="rtn">戻り値：</p>
 <ul>
 <li>event Event</li>
 <li>window BrowserWindow</li>
 </ul>
-<p> browserWindowにフォーカスがあったときに送出されます。</p>
+ browserWindowにフォーカスがあったときに送出されます。
 <h3 id="event-browser-window-created">'browser-window-created'</h3>
 
-<b class="rtn">戻り値：</b>
+<p class="rtn">戻り値：</p>
 <ul>
 <li>event Event</li>
 <li>window BrowserWindow</li>
 </ul>
-<p>新しいbrowserWindowが作成されると発生します。</p>
+新しいbrowserWindowが作成されると発生します。
 <h3 id="event-web-contents-created">'web-contents-created'</h3>
 
-<b class="rtn">戻り値：</b>
+<p class="rtn">戻り値：</p>
 <ul>
 <li>event Event</li>
 <li>WebContents WebContents</li>
 </ul>
-<p>新しいWebContentsが作成されると発生します。</p>
+新しいWebContentsが作成されると発生します。
 <hr>
 <!--■■■■■■■■■■■■■■■■■■■■■■■■■■■■-->
 <!--■■■■■■■■■■■■■■■■■■■■■■■■■■■■-->
@@ -180,31 +214,36 @@ will-quitイベントとwindow-all-closedイベントの違いについては、
 <h2> メソッド</h2>
 <h3 id="appquit">app.quit()</h3>
 
-<p>すべてのウィンドウを閉じるようにしてください。before-quitイベントが最初に出力されます。 すべてのウィンドウが正常に終了すると、 will-quitイベントが発行され、デフォルトではアプリケーションは終了します。</p><p>このメソッドは、すべてのbeforeunloadおよびunloadイベントハンドラが正しく実行されることを保証します。beforeunloadイベントハンドラでfalseを返すことによって、ウィンドウが終了をキャンセルする可能性があります。</p>
+すべてのウィンドウを閉じるようにしてください。<br>
+before-quitイベントが最初に出力されます。 <br>
+すべてのウィンドウが正常に終了すると、 will-quitイベントが発行され、デフォルトではアプリケーションは終了します。<br>
+
 <h3 id="appexitexitcode">app.exit([exitCode])</h3>
 
-<b class="arg">引数：</b>
+<p class="arg">引数：</p>
 <ul>
 <li>exitCode Integer（optional）</li>
 </ul>
-<p>すぐにexitCodeで終了します。exitCodeデフォルトは0です。</p><p>すべてのウィンドウは、ユーザーに尋ねることなくすぐに閉じられ、 before-quitおよびwill-quitイベントは放出されません。</p>
+すぐにexitCodeで終了します。exitCodeデフォルトは0です。すべてのウィンドウは、ユーザーに尋ねることなくすぐに閉じられ、 before-quitおよびwill-quitイベントは放出されません。
 <h3 id="apprelaunchoptions">app.relaunch([options])</h3>
 
-<b class="arg">引数：</b>
+<p class="arg">引数：</p>
 <ul>
     <li>options Object（optional）</li>
+    <ul>
     <li>args String []  - （optional）</li>
     <li>execPath String（optional）</li>
 </ul>
+</ul>
     
-<p>現在のインスタンスが終了したときにアプリを再起動します。</p>
-<p>デフォルトでは、新しいインスタンスは、現在のインスタンスで同じ作業ディレクトリとコマンドライン引数を使用します。
-argsを指定すると、代わりにargsがコマンドライン引数として渡されます。
-execPathが指定されると、 execPathは現在のアプリケーションの代わりに再起動のために実行されます。</p>
-<p>このメソッドは実行時にアプリケーションを終了しないことに注意してくださいapp.exitを呼び出してappを再起動すると、 
-app.quitまたはapp.exitを呼び出すapp.relaunchがあります。</p>
-<p>app.relaunchが複数回呼び出されると、現在のインスタンスが終了した後で複数のインスタンスが開始されます。</p>
-<p>直ちに現在のインスタンスを再起動し、新しいインスタンスに新しいコマンドライン引数を追加する例</p>
+現在のインスタンスが終了したときにアプリを再起動します。<br>
+デフォルトでは、新しいインスタンスは、現在のインスタンスで同じ作業ディレクトリとコマンドライン引数を使用します。<br>
+argsを指定すると、代わりにargsがコマンドライン引数として渡されます。<br>
+execPathが指定されると、 execPathは現在のアプリケーションの代わりに再起動のために実行されます。<br>
+このメソッドは実行時にアプリケーションを終了しないことに注意してくださいapp.exitを呼び出してappを再起動すると、<br>
+app.quitまたはapp.exitを呼び出すapp.relaunchがあります。<br>
+app.relaunchが複数回呼び出されると、現在のインスタンスが終了した後で複数のインスタンスが開始されます。<br>
+直ちに現在のインスタンスを再起動し、新しいインスタンスに新しいコマンドライン引数を追加する例<br>
 
 <pre>
 const {app} = require('electron')
@@ -215,33 +254,33 @@ app.exit(0)
 
 </pre>
 <h3 id="appisready">app.isReady()</h3>
-<b class="rtn">戻り値：</b>
+<p class="rtn">戻り値：</p>
 <ul>
 <li>Boolean -  Electronが初期化を終了した場合はtrue返し、そうでない場合はfalse返します。 </li>
 </ul>
 <h3 id="appfocus">app.focus()</h3>
 
-<p>Linuxでは、最初に表示されるウィンドウに焦点を当てます。macOSでは、アプリケーションをアクティブなアプリケーションにします。Windowsでは、アプリケーションの最初のウィンドウに焦点を当てます。</p>
+Linuxでは、最初に表示されるウィンドウに焦点を当てます。macOSでは、アプリケーションをアクティブなアプリケーションにします。Windowsでは、アプリケーションの最初のウィンドウに焦点を当てます。
 <h3 id="apphide-macos">app.hide()<em class="note">macOS</em></h3>
 
-<p>アプリケーションウィンドウを最小化せずに非表示にします。</p>
+アプリケーションウィンドウを最小化せずに非表示にします。
 <h3 id="appshow-macos">app.show()<em class="note">macOS</em></h3>
 
-<p>アプリケーションウィンドウが非表示になった後に表示されます。 自動的にフォーカスを合わせません。</p>
+アプリケーションウィンドウが非表示になった後に表示されます。 自動的にフォーカスを合わせません。
 <h3 id="appgetapppath">app.getAppPath()</h3>
-<b class="rtn">戻り値：</b>
+<p class="rtn">戻り値：</p>
 <ul>
 <li>String - 現在のアプリケーションディレクトリです。 </li>
 </ul>
 <h3 id="appgetpathname">app.getPath(name)</h3>
 
-<b class="arg">引数：</b>
+<p class="arg">引数：</p>
 <ul>
 <li>name String - 関連付けられた特別なディレクトリまたはファイルへのパスです。 
 失敗すると、 Errorがスローされます。 </li>
 </ul>
 <p class="rtn">戻り値：</p>
-<p>nameで次のパスを要求することができます：</p>
+nameで次のパスを要求することができます：
 <ul>
 <li>home ユーザーのホームディレクトリ。</li>
 <li>appData ユーザーごとのアプリケーションデータディレクトリ。デフォルトでは次のものを指します。
@@ -261,50 +300,15 @@ app.exit(0)
 <li>downloads ユーザーのダウンロード用のディレクトリ。</li>
 <li>music ユーザーのmusicディレクトリ。</li>
 <li>pictures ユーザーのpicturesディレクトリ。</li>
-<li>videosユーザーのvideosディレクトリ。</li>
+<li>videos ユーザーのvideosディレクトリ。</li>
 <li>pepperFlashSystemPlugin Pepper Flashプラグインのシステムバージョンへのフルパス。</li>
 </ul>
 
-<h3 id="appgetfileiconpath-options-callback">app.getFileIcon(path[, options], callback)</h3>
 
-<b class="arg">引数：</b>
-<ul>
-    <li>path String</li>
-    <li>options Object（optional）
-    <ul>
-        <li>size String</li>
-        <ul>
-            <li>small -  16×16</li>
-            <li>normal -  32x32</li>
-            <li>large - <em>Linux</em>では48x48、 <em>Windows</em>では32x32、 <em>MacOSでは</em>サポートされません。</li>
-        </ul>
-    </ul>
-    <li>callback関数</li>
-    <ul>
-        <li>error Error</li>
-        <li>icon NativeImage</li>
-    </ul>
-</ul>
-
-    
-<p>パスの関連アイコンを取得します。</p><p> <em>Windows</em>では、2種類のアイコンがあります。</p>
-
-<li>.mp3 、 .pngなどの特定のファイル拡張子に関連付けられたアイコン</li>
-<li>.exe 、 .dll 、 .icoなどのファイル内のアイコン。</li>
-
-<p> <em>Linux</em>および<em>macOSでは</em> 、アイコンはファイルmimeタイプに関連付けられたアプリケーションに依存します。</p>
-<h3 id="appsetpathname-path">app.setPath(name, path)</h3>
-
-<b class="arg">引数：</b>
-<ul>
-<li>name String</li>
-<li>path String</li>
-</ul>
-<p>name関連付けられた特別なディレクトリまたはファイルへのpathをオーバーライドしpath 。 パスに存在しないディレクトリが指定されている場合、この方法でディレクトリが作成されます。 失敗すると、 Errorがスローされます。</p><p>app.getPath定義されたnameパスのみを上書きできます。</p><p>デフォルトでは、WebページのCookieとキャッシュはuserDataディレクトリに格納されます。 この場所を変更ready場合は、 appモジュールのreadyイベントが発生する前にuserDataパスをオーバーライドする必要があります。</p>
 <h3 id="appgetversion">app.getVersion()</h3>
 
 
-<b class="rtn">戻り値：</b>
+<p class="rtn">戻り値：</p>
 <ul>
 <li>String - ロードされたアプリケーションのバージョンです。</li>
 </ul>
@@ -312,43 +316,17 @@ app.exit(0)
  現在のバンドルまたは実行可能ファイルのバージョンが返されます。
 <h3 id="appgetname">app.getName()</h3>
 
-<b class="rtn">戻り値：</b>
+<p class="rtn">戻り値：</p>
 <ul>
 <li>String - 現在のアプリケーションの名前。アプリケーションのpackage.jsonファイル内の名前です。</li>
 </ul>
-<p>通常、 package.jsonのnameフィールドは、npmモジュールの仕様に従って、短い小文字の名前です。 
- また、通常、アプリケーションの完全な大文字の名前であるproductNameフィールドも指定する必要があります。
- これはElectronよりも優先されます。 
- 
- 
- 
- 
-<h3 id="appsetnamename">app.setName(name)</h3>
-<b class="arg">引数：</b>
-<ul>
-<li>name String</li>
-</ul>
-<p>現在のアプリケーションの名前を上書きします。</p>
 
 <h3 id="appgetlocale">app.getLocale()</h3>
-<b class="rtn">戻り値：</b>
+<p class="rtn">戻り値：</p>
 <ul>
 <li>String - 現在のアプリケーションロケールです。 可能な戻り値については、ここで説明します 。 </li>
-</ul>  <strong>注：</strong>パッケージ化されたアプリケーションを配布するときには、 localesフォルダも同梱する必要があります。 <p> <strong>注：</strong> Windowsでは、 readyイベントが発生した後に呼び出す必要があります。</p>
-<h3 id="appaddrecentdocumentpath-macos-windows">app.addRecentDocument(path)<em class="note">macOS</em><em>Windows</em></h3>
-
-<b class="arg">引数：</b>
-<ul>
-<li>path String</li>
 </ul>
-<p>最近のドキュメントリストにpathを追加しpath 。</p><p>このリストはOSによって管理されます。Windowsでは、タスクバーからリストにアクセスでき、macOSではドックメニューからアクセスできます。</p>
-
-
-<h3 id="appclearrecentdocuments-macos-windows">app.clearRecentDocuments()<em class="note">macOS</em><em>Windows</em></h3>
-
-<p>最近のドキュメントリストを消去します。</p>
-
-
+<strong>注：</strong>パッケージ化されたアプリケーションを配布するときには、 localesフォルダも同梱する必要があります。  <strong>注：</strong> Windowsでは、 readyイベントが発生した後に呼び出す必要があります。
 
 
 
@@ -366,81 +344,81 @@ app.exit(0)
 <!--■■■■■■■■■■■■■■■■■■■■■■■■■■■■-->
 <h2>app全ての一覧</h2>
 <h3>イベント一覧</h3>
-<dd><a href="#event-will-finish-launching">will-finish-launching</a>
-<dd><a href="#event-ready">ready</a>
-<dd><a href="#event-window-all-closed">window-all-closed</a>
-<dd><a href="#event-before-quit">before-quit</a>
-<dd><a href="#event-will-quit">will-quit</a>
-<dd><a href="#event-quit">quit</a>
-<dd><a href="#event-open-file-macos">open-file</a>
-<dd><a href="#event-open-url-macos">open-url</a>
-<dd><a href="#event-activate-macos">activate</a>
-<dd><a href="#event-continue-activity-macos">continue-activity</a>
-<dd><a href="#event-new-window-for-tab-macos">new-window-for-tab</a>
-<dd><a href="#event-browser-window-blur">browser-window-blur</a>
-<dd><a href="#event-browser-window-focus">browser-window-focus</a>
-<dd><a href="#event-browser-window-created">browser-window-created</a>
-<dd><a href="#event-web-contents-created">web-contents-created</a>
-<dd><a href="#event-certificate-error">certificate-error</a>
-<dd><a href="#event-select-client-certificate">select-client-certificate</a>
-<dd><a href="#event-login">login</a>
-<dd><a href="#event-gpu-process-crashed">gpu-process-crashed</a>
-<dd><a href="#event-accessibility-support-changed-macos-windows">accessibility-support-changed</a>
+<dd>will-finish-launching
+<dd>ready
+<dd>window-all-closed
+<dd>before-quit
+<dd>will-quit
+<dd>quit
+<dd>open-file
+<dd>open-url
+<dd>activate
+<dd>continue-activity
+<dd>new-window-for-tab
+<dd>browser-window-blur
+<dd>browser-window-focus
+<dd>browser-window-created
+<dd>web-contents-created
+<dd>certificate-error
+<dd>select-client-certificate
+<dd>login
+<dd>gpu-process-crashed
+<dd>accessibility-support-changed
 <h3>メソッド一覧</h3>
-<dd><a href="#appquit">app.quit()</a>
-<dd><a href="#appexitexitcode">app.exit([exitCode])</a>
-<dd><a href="#apprelaunchoptions">app.relaunch([options])</a>
-<dd><a href="#appisready">app.isReady()</a>
-<dd><a href="#appfocus">app.focus()</a>
-<dd><a href="#apphide-macos">app.hide()</a><!---------->
-<dd><a href="#appshow-macos">app.show()</a>
-<dd><a href="#appgetapppath">app.getAppPath()</a>
-<dd><a href="#appgetpathname">app.getPath(name)</a>
-<dd><a href="#appgetfileiconpath-options-callback">app.getFileIcon(path[, options], callback)</a>
-<dd><a href="#appsetpathname-path">app.setPath(name, path)</a>
-<dd><a href="#appgetversion">app.getVersion()</a>
-<dd><a href="#appgetname">app.getName()</a>
-<dd><a href="#appsetnamename">app.setName(name)</a>
-<dd><a href="#appgetlocale">app.getLocale()</a>
-<dd><a href="#appaddrecentdocumentpath-macos-windows">app.addRecentDocument(path)</a>
-<dd><a href="#appclearrecentdocuments-macos-windows">app.clearRecentDocuments()</a>
-<dd><a href="#appsetasdefaultprotocolclientprotocol-path-args-macos-windows">app.setAsDefaultProtocolClient(protocol[, path, args])</a>
-<dd><a href="#appremoveasdefaultprotocolclientprotocol-path-args-macos-windows">app.removeAsDefaultProtocolClient(protocol[, path, args])</a>
-<dd><a href="#appisdefaultprotocolclientprotocol-path-args-macos-windows">app.isDefaultProtocolClient(protocol[, path, args])</a>
-<dd><a href="#appsetusertaskstasks-windows">app.setUserTasks(tasks)</a>
-<dd><a href="#appgetjumplistsettings-windows">app.getJumpListSettings()</a>
-<dd><a href="#appsetjumplistcategories-windows">app.setJumpList(categories)</a>
-<dd><a href="#appmakesingleinstancecallback">app.makeSingleInstance(callback)</a>
-<dd><a href="#appreleasesingleinstance">app.releaseSingleInstance()</a>
-<dd><a href="#appsetuseractivitytype-userinfo-webpageurl-macos">app.setUserActivity(type, userInfo[, webpageURL])</a>
-<dd><a href="#appgetcurrentactivitytype-macos">app.getCurrentActivityType()</a>
-<dd><a href="#appsetappusermodelidid-windows">app.setAppUserModelId(id)</a>
-<dd><a href="#appimportcertificateoptions-callback-linux">app.importCertificate(options, callback)</a>
-<dd><a href="#appdisablehardwareacceleration">app.disableHardwareAcceleration()</a>
-<dd><a href="#appdisabledomainblockingfor3dapis">app.disableDomainBlockingFor3DAPIs()</a>
-<dd><a href="#appgetappmemoryinfo-deprecated">app.getAppMemoryInfo()</a>
-<dd><a href="#appgetappmetrics">app.getAppMetrics()</a>
-<dd><a href="#appgetgpufeaturestatus">app.getGpuFeatureStatus()</a>
-<dd><a href="#appsetbadgecountcount-linux-macos">app.setBadgeCount(count)</a>
-<dd><a href="#appgetbadgecount-linux-macos">app.getBadgeCount()</a>
-<dd><a href="#appisunityrunning-linux">app.isUnityRunning()</a>
-<dd><a href="#appgetloginitemsettingsoptions-macos-windows">app.getLoginItemSettings([options])</a>
-<dd><a href="#appsetloginitemsettingssettings-macos-windows">app.setLoginItemSettings(settings)</a>
-<dd><a href="#appisaccessibilitysupportenabled-macos-windows">app.isAccessibilitySupportEnabled()</a>
-<dd><a href="#appsetaboutpaneloptionsoptions-macos">app.setAboutPanelOptions(options)</a>
-<dd><a href="#appcommandlineappendswitchswitch-value">app.commandLine.appendSwitch(switch[, value])</a>
-<dd><a href="#appcommandlineappendargumentvalue">app.commandLine.appendArgument(value)</a>
-<dd><a href="#appenablemixedsandbox-experimental-macos-windows">app.enableMixedSandbox()</a>
-<dd><a href="#appdockbouncetype-macos">app.dock.bounce([type])</a>
-<dd><a href="#appdockcancelbounceid-macos">app.dock.cancelBounce(id)</a>
-<dd><a href="#appdockdownloadfinishedfilepath-macos">app.dock.downloadFinished(filePath)</a>
-<dd><a href="#appdocksetbadgetext-macos">app.dock.setBadge(text)</a>
-<dd><a href="#appdockgetbadge-macos">app.dock.getBadge()</a>
-<dd><a href="#appdockhide-macos">app.dock.hide()</a>
-<dd><a href="#appdockshow-macos">app.dock.show()</a>
-<dd><a href="#appdockisvisible-macos">app.dock.isVisible()</a>
-<dd><a href="#appdocksetmenumenu-macos">app.dock.setMenu(menu)</a>
-<dd><a href="#appdockseticonimage-macos">app.dock.setIcon(image)</a>
+<dd>app.quit()
+<dd>app.exit([exitCode])
+<dd>app.relaunch([options])
+<dd>app.isReady()
+<dd>app.focus()
+<dd>app.hide()<!---------->
+<dd>app.show()
+<dd>app.getAppPath()
+<dd>app.getPath(name)
+<dd>app.getFileIcon(path[, options], callback)
+<dd>app.setPath(name, path)
+<dd>app.getVersion()
+<dd>app.getName()
+<dd>app.setName(name)
+<dd>app.getLocale()
+<dd>app.addRecentDocument(path)
+<dd>app.clearRecentDocuments()
+<dd>app.setAsDefaultProtocolClient(protocol[, path, args])
+<dd>app.removeAsDefaultProtocolClient(protocol[, path, args])
+<dd>app.isDefaultProtocolClient(protocol[, path, args])
+<dd>app.setUserTasks(tasks)
+<dd>app.getJumpListSettings()
+<dd>app.setJumpList(categories)
+<dd>app.makeSingleInstance(callback)
+<dd>app.releaseSingleInstance()
+<dd>app.setUserActivity(type, userInfo[, webpageURL])
+<dd>app.getCurrentActivityType()
+<dd>app.setAppUserModelId(id)
+<dd>app.importCertificate(options, callback)
+<dd>app.disableHardwareAcceleration()
+<dd>app.disableDomainBlockingFor3DAPIs()
+<dd>app.getAppMemoryInfo()
+<dd>app.getAppMetrics()
+<dd>app.getGpuFeatureStatus()
+<dd>app.setBadgeCount(count)
+<dd>app.getBadgeCount()
+<dd>app.isUnityRunning()
+<dd>app.getLoginItemSettings([options])
+<dd>app.setLoginItemSettings(settings)
+<dd>app.isAccessibilitySupportEnabled()
+<dd>app.setAboutPanelOptions(options)
+<dd>app.commandLine.appendSwitch(switch[, value])
+<dd>app.commandLine.appendArgument(value)
+<dd>app.enableMixedSandbox()
+<dd>app.dock.bounce([type])
+<dd>app.dock.cancelBounce(id)
+<dd>app.dock.downloadFinished(filePath)
+<dd>app.dock.setBadge(text)
+<dd>app.dock.getBadge()
+<dd>app.dock.hide()
+<dd>app.dock.show()
+<dd>app.dock.isVisible()
+<dd>app.dock.setMenu(menu)
+<dd>app.dock.setIcon(image)
 
 
 

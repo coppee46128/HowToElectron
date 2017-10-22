@@ -4,7 +4,6 @@ body{
 }
 header{
     width:1200px;
-    height:100px;
     background-color:black;
     margin-left:auto;
     margin-right:auto;
@@ -17,10 +16,10 @@ section{
     margin-right:auto;
 }
 a{color:white;}
-hr{border:3px dotted;color:steelblue;margin-bottom:100px;}
-h1{background-color:steelblue;}
-h2{background-color:steelblue;}
-h3{background-color:darkolivegreen;}
+hr{border:3px dotted;color:steelblue;margin-top:50px;margin-bottom:50px;}
+h1{background-color:steelblue;padding:20px;}
+h2{background-color:steelblue;padding:10px;}
+h3{background-color:darkolivegreen;padding:5px;margin-top:100px;}
 li{}
 table{
     border: solid 1px #ffffff;
@@ -30,6 +29,7 @@ td{border: solid 1px #ffffff;}
 pre{
     margin:30px;
     padding:30px;
+    font-size:12px;
     background-color:indigo;
 }
 
@@ -52,18 +52,28 @@ pre{
     margin:0px;
     padding:20px;
 }
-.headline{
+.rightheader{
 	background-color:steelblue;
 	margin-bottom:50px;
 	padding:50px;
 }
-.rtn{color:darkorange;}/*returnñﬂÇËíl*/
-.arg{color:yellow;}/*à¯êî*/
+.rtn{
+	background-color:darkorange;
+	color:navy;
+	width:200px;
+}/*returnñﬂÇËíl*/
+.arg{
+	background-color:peachpuff;
+	color:navy;
+	width:200px;
+}/*à¯êî*/
 
 .note{
-    background-color:maroon;
+	background-color:maroon;
+	
 }
-.bigtitle{
+.big{
 	font-size:100px;
+	font-style:bold;
 	margin-bottom:50px;
 }
